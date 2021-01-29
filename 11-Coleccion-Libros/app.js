@@ -74,8 +74,15 @@
             localStorage.setItem('libros',JSON.stringify(libros));
         }
 
-        static removerLibro(isbn){
+        static removerLibro(isbn){//llamo al método removerLibro y le envio isbn
+            const libros = Datos.traerLibros();//traigo el arreglo Libros
 
+            libros.forEach((libro, index)=>{//función flecha que envia como parámetro libro,index
+                if(libro.isbn === isbn){
+                    libros.splice(index, 1);//splice elimina 
+                }
+            });
+            localStorage.setItem('libros', JSON.stringify(libros));
         }
 
     }
@@ -107,5 +114,6 @@
     });
     document.querySelector('#libro-list').addEventListener('click', (e)=>{
         UI.eliminarLibro(e.target);
-        Datos.removerLibro(e.target.parentElement.previosElementSibling.textContent);
+        Datos.removerLibro(e.target.parentElement.previousElementSibling.textContent);
+        UI.mostrarAlerta('Libro Eliminado','success');
     })
