@@ -49,7 +49,7 @@
                     response([101,102,103,105]);
                 },1500);
             });    
-            const getUsuario = userIDs => {
+            const getUsuario = userID => {
                 return new Promise((resolve, reject) => {
                     setTimeout(id => {
                         const usuario = {
@@ -57,7 +57,7 @@
                             nombre : 'Davis'
                         }
                        resolve (`${id} - ${usuario.email} - ${usuario.nombre}`);
-                    },1500, userIDs)
+                    },1500, userID)
                 });
             }
         
@@ -70,23 +70,51 @@
                 });
             }
 
-            getUsuariosIDs
-            .then(IDs => {
-                console.log(IDs);
-                return getUsuario(IDs[3]);
-            })
-            .then(usuario => {
-                console.log(usuario);
-                return getPermisos(usuario.id);
-            })
-            .then(permisos =>{
-                console.log(permisos);
-            })
-            .catch(()=> {
-             console.log('Error...');
+            // getUsuariosIDs
+            // .then(IDs => {
+            //     console.log(IDs);
+            //     return getUsuario(IDs[3]);
+            // })
+            // .then(usuario => {
+            //     console.log(usuario);
+            //     return getPermisos(usuario.id);
+            // })
+            // .then(permisos =>{
+            //     console.log(permisos);
+            // })
+            // .catch(()=> {
+            //  console.log('Error...');
 
-            })
+            // })
             
+
+            ///Función con Async/Await///
+
+            async function getUsuariosAW(){ //Función Asíncrona
+                const IDs = await getUsuariosIDs;
+                console.log(IDs);
+                const usuario = await getUsuario(IDs[3]);//traemos los datos del usuario
+                console.log(usuario);
+
+                const permisos = await getPermisos(usuario.id)
+                console.log(permisos);
+                return usuario;
+            }
+             //getUsuariosAW().then(resultado => console.log(`${resultado} es un Usuario.`));//Guardamos la función Asincrona
+                
+                ///Ejemplo de una llama AJAX con HTML Request///
+                const request = new XMLHttpRequest();
+
+                request.addEventListener('readystatechange', (e) => {//lee los cambios de estado por los que pasa
+                      if(e.target.readyState === 4){
+                         const datos = JSON.parse(e.target.responseText);
+                         console.log(datos); 
+                      } 
+                });
+
+                request.open('GET','http://jsonplaceholder.typicode.com/users');
+                request.send();
+                //open se utiliza para abrir la ruta que queremos leer GET
 
         ///Ejemplo del uso de Promesas///
             ///Ejemplo 1///
